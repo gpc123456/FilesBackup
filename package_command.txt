@@ -1,1 +1,1 @@
-pyinstaller main.py -F --hidden-import plyer.platforms.win.notification
+pyinstaller main.py -F --hidden-import plyer.platforms.win.notification -i icon.ico
