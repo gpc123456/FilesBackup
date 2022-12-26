@@ -44,6 +44,7 @@ des = ""
 listening_device = ""
 
 GUI.StartGUI()
+notification.notify(title="自动备份小工具", message="自动备份小工具已启动", timeout=1)
 
 while True:
     try:
@@ -77,8 +78,7 @@ while True:
         if device_status[0] == 1:
             file_status = Core.SrcFileExists(src)
             if file_status == 1:
-                notification.notify(
-                    title="自动备份小工具", message="备份设备已插入", timeout=1)
+                notification.notify(title="自动备份小工具", message="备份设备已插入", timeout=1)
                 print("备份设备已插入")
                 listening_device = device_status[1]
                 break
