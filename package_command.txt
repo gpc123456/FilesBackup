@@ -1,0 +1,1 @@
+pyinstaller main.py --hidden-import plyer.platforms.win.notification
