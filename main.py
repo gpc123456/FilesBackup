@@ -26,8 +26,8 @@ class Logger(object):
  
     def flush(self):
         pass
- 
- 
+
+    
 sys.stdout = Logger("stdout.log")
 sys.stderr =  Logger("stderr.log")
 

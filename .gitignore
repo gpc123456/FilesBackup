@@ -3,5 +3,7 @@ build/
 dist/
 ProjectVenv/
 config
-main.spec/
+main.spec
 stdout.log
+stderr.log
+img.ico
