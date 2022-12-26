@@ -2,8 +2,11 @@ __pycache__/
 build/
 dist/
 ProjectVenv/
+main.build/
 config
 main.spec
 stdout.log
 stderr.log
 img.ico
+main.cmd
+main.exe
