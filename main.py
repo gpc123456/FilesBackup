@@ -27,7 +27,7 @@ class Logger(object):
     def flush(self):
         pass
 
-    
+
 sys.stdout = Logger("stdout.log")
 sys.stderr =  Logger("stderr.log")
 
@@ -54,13 +54,13 @@ while True:
             src = src_and_des['src']
             des = src_and_des['des']
             if src == "" and des == "":
-                print("未设置备份源目录和目标目录")
+                #print("未设置备份源目录和目标目录")
                 vglobal.set_value("status", "未设置备份源目录和目标目录")
             elif src == "":
-                print("未设置备份源目录")
+                #print("未设置备份源目录")
                 vglobal.set_value("status", "未设置备份源目录")
             elif des == "":
-                print("未设置备份目标目录")
+                #print("未设置备份目标目录")
                 vglobal.set_value("status", "未设置备份目标目录")
             else:
                 break
