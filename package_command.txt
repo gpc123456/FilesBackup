@@ -1,1 +1,1 @@
-pyinstaller main.py -F --hidden-import plyer.platforms.win.notification -i icon.ico
+nuitka --onefile --plugin-enable=tk-inter --windows-disable-console --standalone --output-dir=./build --include-package=plyer.platforms.win.notification --windows-icon-from-ico=pic_icon.ico main.py

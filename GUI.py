@@ -17,6 +17,7 @@ def click_src(icon: pystray.Icon):
     Folderpath = filedialog.askdirectory()
     Folderpath=Folderpath.replace("/","\\\\")
     print(Folderpath)
+    #TODO:当未选择时，应不执行下面的操作和不弹出下面的对话框
     with open("config", "r", encoding='utf-8') as f:
         json_data = f.read()
         src_and_des = json.loads(json_data)
@@ -32,6 +33,7 @@ def click_des(icon, item):
     Folderpath = filedialog.askdirectory()
     Folderpath=Folderpath.replace("/","\\\\")
     print(Folderpath)
+    #TODO:当未选择时，应不执行下面的操作和不弹出下面的对话框
     with open("config", "r", encoding='utf-8') as f:
         json_data = f.read()
         src_and_des = json.loads(json_data)
