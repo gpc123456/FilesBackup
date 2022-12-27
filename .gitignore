@@ -1,11 +1,9 @@
 __pycache__/
 build/
-dist/
 ProjectVenv/
-main.build/
 config
+img.png
 pic_icon.ico
 stdout.log
 stderr.log
 build.txt
-.gitignore
