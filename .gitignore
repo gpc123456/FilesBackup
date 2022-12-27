@@ -4,10 +4,8 @@ dist/
 ProjectVenv/
 main.build/
 config
-main.spec
+pic_icon.ico
 stdout.log
 stderr.log
-img.ico
-main.cmd
-main.exe
 build.txt
+.gitignore
