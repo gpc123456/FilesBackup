@@ -33,7 +33,8 @@ class Logger(object):
 sys.stdout = Logger("stdout.log")
 sys.stderr = Logger("stderr.log")
 
-
+print("--------------------------------------------")
+print("ProcessStart["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]")
 vglobal._init()
 vglobal.set_value("EjectDiskFlag", "0")  # 0无拔出信号,1有拔出信号
 vglobal.set_value("exit", "0")  # 0无退出信号,1有退出信号
@@ -65,6 +66,7 @@ while True:
             else:
                 break
     except FileNotFoundError:
+        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("没有找到配置文件,新建配置文件...")
         with open("config", "w", encoding='utf-8') as f:
             f.writelines('{"src":"","des":""}')
@@ -80,6 +82,7 @@ while True:
             if des_status == 1:
                 notification.notify(title="自动备份小工具", message="发现备份源目录及目标目录", timeout=1)
                 vglobal.set_value("status", "发现备份源目录及目标目录")
+                print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
                 print("发现备份源目录及目标目录")
                 break
         if (vglobal.get_value("exit") == "1"):
@@ -95,14 +98,17 @@ while True:
     while True:
         if Core.SrcFileExists(src) == 0 or Core.DesFileExists(des) == 0:
             if Core.SrcFileExists(src) == 0 and Core.DesFileExists(des) == 0:
+                print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
                 print("同步设备异常拔出,同步终止")
                 vglobal.set_value("status", "同步设备异常拔出,同步终止")
                 notification.notify(title="自动备份小工具", message="同步设备异常拔出,同步终止", timeout=5)
             elif Core.SrcFileExists(src) == 0:
+                print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
                 print("同步源目录设备异常拔出,同步终止")
                 vglobal.set_value("status", "同步源目录设备异常拔出,同步终止")
                 notification.notify(title="自动备份小工具", message="同步源目录设备异常拔出,同步终止", timeout=5)
             else:
+                print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
                 print("同步目标目录设备异常拔出,同步终止")
                 vglobal.set_value("status", "同步目标目录设备异常拔出,同步终止")
                 notification.notify(title="自动备份小工具", message="同步目标目录设备异常拔出,同步终止", timeout=5)

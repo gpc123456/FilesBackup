@@ -5,6 +5,7 @@ from pystray import MenuItem
 import tkinter as tk
 from tkinter import filedialog
 import json
+import time
 import vglobal
 
 
@@ -17,7 +18,8 @@ def click_src(icon: pystray.Icon):
     root.withdraw()
     Folderpath = filedialog.askdirectory()
     Folderpath = Folderpath.replace("/", "\\")
-    print(Folderpath)
+    print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
+    print("设置sec:"+Folderpath)
     if Folderpath != "":
         with open("config", "r", encoding='utf-8') as f:
             json_data = f.read()
@@ -35,7 +37,8 @@ def click_des(icon, item):
     root.withdraw()
     Folderpath = filedialog.askdirectory()
     Folderpath = Folderpath.replace("/", "\\")
-    print(Folderpath)
+    print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
+    print("设置des:"+Folderpath)
     if Folderpath != "":
         with open("config", "r", encoding='utf-8') as f:
             json_data = f.read()
@@ -50,6 +53,7 @@ def click_des(icon, item):
 
 def on_exit(icon: pystray.Icon):
     if vglobal.get_value("exit_lock") == "1":
+        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("正在同步文件,无法退出")
         icon.notify("正在同步文件,无法退出")
     else:
@@ -59,6 +63,7 @@ def on_exit(icon: pystray.Icon):
 
 def click_EjectDisk(icon: pystray.Icon):
     if vglobal.get_value("exit_lock") == "1":
+        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("正在同步文件,无法弹出磁盘")
         icon.notify("正在同步文件,无法弹出磁盘")
     else:

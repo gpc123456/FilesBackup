@@ -9,9 +9,11 @@ from plyer import notification
 
 
 def Sync(src, des):
+    print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
     print("正在同步文件")
     # 检测备份文件夹
     if not os.path.exists(des+"\\Backup"):
+        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("初次使用同步功能,初始化同步文件夹")
         vglobal.set_value("status", "初次使用同步功能,初始化同步文件夹")
         notification.notify(
@@ -21,6 +23,7 @@ def Sync(src, des):
         p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
         p.wait()
         # os.system(cmd)
+        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("同步文件夹初始化完成,开始监听文件修改")
         notification.notify(
             title="自动备份小工具", message="同步文件夹初始化完成,实时同步开启", timeout=5)
@@ -29,6 +32,7 @@ def Sync(src, des):
         # 每日备份文件夹格式:DayBackup_yyyy_mm_dd
         yesterday = (date.today() + timedelta(days=-1)).strftime("%Y_%m_%d")
         if not os.path.exists(des+"\\DayBackup_"+yesterday):
+            print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
             print("进行每日快照备份中...")
             vglobal.set_value("status", "进行每日快照备份中...")
             notification.notify(
@@ -38,9 +42,11 @@ def Sync(src, des):
             p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
             p.wait()
             # os.system(cmd)
+            print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
             print("每日快照备份完成")
             notification.notify(
                 title="自动备份小工具", message="每日快照备份完成,更新备份文件夹", timeout=5)
+            print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
             print("更新备份文件夹")
             vglobal.set_value("status", "更新备份文件夹")
             shutil.rmtree(des+"\\Backup")
@@ -49,10 +55,12 @@ def Sync(src, des):
             p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
             p.wait()
             # os.system(cmd)
+            print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
             print("更新备份文件夹完成,实时同步开启")
             notification.notify(
                 title="自动备份小工具", message="更新备份文件夹完成,实时同步开启", timeout=5)
         else:
+            print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
             print("今日已同步,本次同步将被跳过,开始监听文件修改")
             notification.notify(title="自动备份小工具", message="实时同步开启", timeout=1)
 
@@ -65,8 +73,10 @@ class MyHandler(FileSystemEventHandler):
 
     def on_created(self, event):
         time.sleep(0.1)
+        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("发现文件更新")
         vglobal.set_value("status", "发现文件更新,正在同步")
+        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print(event.event_type, event.src_path)
         vglobal.set_value("exit_lock", "1")
         cmd = "xcopy /s /y /d /e "+self.src+" "+self.des+"\\Backup"
@@ -74,13 +84,16 @@ class MyHandler(FileSystemEventHandler):
         p.wait()
         # os.system(cmd)
         vglobal.set_value("exit_lock", "0")
+        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("同步完成")
         vglobal.set_value("status", "同步完成")
 
     def on_moved(self, event):
         time.sleep(0.1)
+        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("发现文件更新")
         vglobal.set_value("status", "发现文件更新,正在同步")
+        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print(event.event_type, event.src_path)
         vglobal.set_value("exit_lock", "1")
         replace_len = len(self.src)
@@ -89,26 +102,33 @@ class MyHandler(FileSystemEventHandler):
         try:
             delete_is_dir = os.path.isdir(delete_path)
             if delete_is_dir == True:
+                print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
                 print("删除文件夹:"+delete_path)
                 shutil.rmtree(delete_path)
             else:
+                print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
                 print("删除文件:"+delete_path)
                 os.remove(delete_path)
         except FileNotFoundError:
+            print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
             print("要删除的文件不存在,无需进行删除操作")
+        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("移动操作前文件已删除,重新同步目标文件")
         cmd = "xcopy /s /y /d /e "+self.src+" "+self.des+"\\Backup"
         p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
         p.wait()
         # os.system(cmd)
         vglobal.set_value("exit_lock", "0")
+        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("同步完成")
         vglobal.set_value("status", "同步完成")
 
     def on_modified(self, event):
         time.sleep(0.1)
+        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("发现文件更新")
         vglobal.set_value("status", "发现文件更新,正在同步")
+        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print(event.event_type, event.src_path)
         vglobal.set_value("exit_lock", "1")
         cmd = "xcopy /s /y /d /e "+self.src+" "+self.des+"\\Backup"
@@ -116,12 +136,15 @@ class MyHandler(FileSystemEventHandler):
         p.wait()
         # os.system(cmd)
         vglobal.set_value("exit_lock", "0")
+        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("同步完成")
         vglobal.set_value("status", "同步完成")
 
     def on_deleted(self, event):
+        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("发现文件删除")
         vglobal.set_value("status", "发现文件删除,正在同步")
+        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print(event.event_type, event.src_path)
         vglobal.set_value("exit_lock", "1")
         replace_len = len(self.src)
@@ -130,20 +153,26 @@ class MyHandler(FileSystemEventHandler):
         try:
             delete_is_dir = os.path.isdir(delete_path)
             if delete_is_dir == True:
+                print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
                 print("删除文件夹:"+delete_path)
                 shutil.rmtree(delete_path)
                 vglobal.set_value("exit_lock", "0")
+                print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
                 print("同步完成")
                 vglobal.set_value("status", "同步完成")
             else:
+                print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
                 print("删除文件:"+delete_path)
                 os.remove(delete_path)
                 vglobal.set_value("exit_lock", "0")
+                print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
                 print("同步完成")
                 vglobal.set_value("status", "同步完成")
         except FileNotFoundError:
+            print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
             print("要删除的文件不存在,无需进行删除操作")
             vglobal.set_value("exit_lock", "0")
+            print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
             print("同步完成")
             vglobal.set_value("status", "同步完成")
 
@@ -174,4 +203,5 @@ def DesFileExists(des):
 
 def EjectDisk(observer):
     observer.stop()
+    print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
     print("文件监听已停止,可以弹出磁盘")
