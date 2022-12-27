@@ -16,7 +16,7 @@ def click_src(icon: pystray.Icon):
     root = tk.Tk()
     root.withdraw()
     Folderpath = filedialog.askdirectory()
-    Folderpath = Folderpath.replace("/", "\\\\")
+    Folderpath = Folderpath.replace("/", "\\")
     print(Folderpath)
     if Folderpath != "":
         with open("config", "r", encoding='utf-8') as f:
@@ -34,7 +34,7 @@ def click_des(icon, item):
     root = tk.Tk()
     root.withdraw()
     Folderpath = filedialog.askdirectory()
-    Folderpath = Folderpath.replace("/", "\\\\")
+    Folderpath = Folderpath.replace("/", "\\")
     print(Folderpath)
     if Folderpath != "":
         with open("config", "r", encoding='utf-8') as f:

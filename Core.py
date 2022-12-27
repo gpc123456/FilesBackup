@@ -5,6 +5,7 @@ from datetime import date, timedelta
 from watchdog.events import FileSystemEventHandler
 import psutil
 import vglobal
+import subprocess
 from plyer import notification
 
 def Sync(src, des):
@@ -16,7 +17,9 @@ def Sync(src, des):
         notification.notify(title="自动备份小工具",message="初次使用同步功能,初始化同步文件夹",timeout=5)
         os.mkdir(des+"\\Backup")
         cmd = "xcopy /s /y /d /e "+src+" "+des+"\\Backup"
-        os.system(cmd)
+        p=subprocess.Popen(cmd,shell=True,encoding='gb2312')
+        p.wait()
+        #os.system(cmd)
         print("同步文件夹初始化完成,开始监听文件修改")
         notification.notify(title="自动备份小工具",message="同步文件夹初始化完成,实时同步开启",timeout=5)
     else:
@@ -29,7 +32,9 @@ def Sync(src, des):
             notification.notify(title="自动备份小工具",message="进行每日快照备份中...",timeout=5)
             os.mkdir(des+"\\DayBackup_"+yesterday)
             cmd = "xcopy /s /y /d /e "+des+"\\Backup "+des+"\\DayBackup_"+yesterday
-            os.system(cmd)
+            p=subprocess.Popen(cmd,shell=True,encoding='gb2312')
+            p.wait()
+            #os.system(cmd)
             print("每日快照备份完成")
             notification.notify(title="自动备份小工具",message="每日快照备份完成,更新备份文件夹",timeout=5)
             print("更新备份文件夹")
@@ -37,7 +42,9 @@ def Sync(src, des):
             shutil.rmtree(des+"\\Backup")
             os.mkdir(des+"\\Backup")
             cmd = "xcopy /s /y /d /e "+src+" "+des+"\\Backup"
-            os.system(cmd)
+            p=subprocess.Popen(cmd,shell=True,encoding='gb2312')
+            p.wait()
+            #os.system(cmd)
             print("更新备份文件夹完成,实时同步开启")
             notification.notify(title="自动备份小工具",message="更新备份文件夹完成,实时同步开启",timeout=5)
         else:
@@ -58,7 +65,9 @@ class MyHandler(FileSystemEventHandler):
         print(event.event_type, event.src_path)
         vglobal.set_value("exit_lock","1")
         cmd = "xcopy /s /y /d /e "+self.src+" "+self.des+"\\Backup"
-        os.system(cmd)
+        p=subprocess.Popen(cmd,shell=True,encoding='gb2312')
+        p.wait()
+        #os.system(cmd)
         vglobal.set_value("exit_lock","0")
         print("同步完成")
         vglobal.set_value("status", "同步完成")
@@ -70,9 +79,8 @@ class MyHandler(FileSystemEventHandler):
         print(event.event_type, event.src_path)
         vglobal.set_value("exit_lock","1")
         replace_len=len(self.src)
-        relative_path=event.src_path[replace_len:]
+        relative_path=event.src_path[replace_len+1:]
         delete_path=self.des+"\\Backup\\"+relative_path
-        print("删除:"+delete_path)
         try:
             delete_is_dir=os.path.isdir(delete_path)
             if delete_is_dir==True:
@@ -85,7 +93,9 @@ class MyHandler(FileSystemEventHandler):
             print("要删除的文件不存在,无需进行删除操作")
         print("移动操作前文件已删除,重新同步目标文件")
         cmd = "xcopy /s /y /d /e "+self.src+" "+self.des+"\\Backup"
-        os.system(cmd)
+        p=subprocess.Popen(cmd,shell=True,encoding='gb2312')
+        p.wait()
+        #os.system(cmd)
         vglobal.set_value("exit_lock","0")
         print("同步完成")
         vglobal.set_value("status", "同步完成")
@@ -97,7 +107,9 @@ class MyHandler(FileSystemEventHandler):
         print(event.event_type, event.src_path)
         vglobal.set_value("exit_lock","1")
         cmd = "xcopy /s /y /d /e "+self.src+" "+self.des+"\\Backup"
-        os.system(cmd)
+        p=subprocess.Popen(cmd,shell=True,encoding='gb2312')
+        p.wait()
+        #os.system(cmd)
         vglobal.set_value("exit_lock","0")
         print("同步完成")
         vglobal.set_value("status", "同步完成")
@@ -108,9 +120,8 @@ class MyHandler(FileSystemEventHandler):
         print(event.event_type, event.src_path)
         vglobal.set_value("exit_lock","1")
         replace_len=len(self.src)
-        relative_path=event.src_path[replace_len:]
+        relative_path=event.src_path[replace_len+1:]
         delete_path=self.des+"\\Backup\\"+relative_path
-        print("删除:"+delete_path)
         try:
             delete_is_dir=os.path.isdir(delete_path)
             if delete_is_dir==True:
