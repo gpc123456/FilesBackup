@@ -7,6 +7,7 @@ from tkinter import filedialog
 import json
 import vglobal
 
+
 def click_status(icon: pystray.Icon):
     icon.notify("同步工具状态", vglobal.get_value("status"))
 
@@ -15,36 +16,40 @@ def click_src(icon: pystray.Icon):
     root = tk.Tk()
     root.withdraw()
     Folderpath = filedialog.askdirectory()
-    Folderpath=Folderpath.replace("/","\\\\")
+    Folderpath = Folderpath.replace("/", "\\\\")
     print(Folderpath)
-    #TODO:当未选择时，应不执行下面的操作和不弹出下面的对话框
-    with open("config", "r", encoding='utf-8') as f:
-        json_data = f.read()
-        src_and_des = json.loads(json_data)
-        src_and_des['src']=Folderpath
-        with open("config", "w", encoding='utf-8') as f:
-            f.writelines(json.dumps(src_and_des,ensure_ascii=False))
-    icon.notify("同步源目录设置成功,如已开始同步,需要重新启动软件后生效")
+    if Folderpath != "":
+        with open("config", "r", encoding='utf-8') as f:
+            json_data = f.read()
+            src_and_des = json.loads(json_data)
+            src_and_des['src'] = Folderpath
+            with open("config", "w", encoding='utf-8') as f:
+                f.writelines(json.dumps(src_and_des, ensure_ascii=False))
+        icon.notify("备份源目录设置成功,如已开始同步,需要重新启动软件后生效")
+    else:
+        icon.notify("未选择备份源目录,同步配置将不会被修改")
 
 
 def click_des(icon, item):
     root = tk.Tk()
     root.withdraw()
     Folderpath = filedialog.askdirectory()
-    Folderpath=Folderpath.replace("/","\\\\")
+    Folderpath = Folderpath.replace("/", "\\\\")
     print(Folderpath)
-    #TODO:当未选择时，应不执行下面的操作和不弹出下面的对话框
-    with open("config", "r", encoding='utf-8') as f:
-        json_data = f.read()
-        src_and_des = json.loads(json_data)
-        src_and_des['des']=Folderpath
-        with open("config", "w", encoding='utf-8') as f:
-            f.writelines(json.dumps(src_and_des,ensure_ascii=False))
-    icon.notify("同步目标目录设置成功,如已开始同步,需要重新启动软件后生效")
+    if Folderpath != "":
+        with open("config", "r", encoding='utf-8') as f:
+            json_data = f.read()
+            src_and_des = json.loads(json_data)
+            src_and_des['des'] = Folderpath
+            with open("config", "w", encoding='utf-8') as f:
+                f.writelines(json.dumps(src_and_des, ensure_ascii=False))
+        icon.notify("备份目标目录设置成功,如已开始同步,需要重新启动软件后生效")
+    else:
+        icon.notify("未选择备份目标目录,同步配置将不会被修改")
 
 
 def on_exit(icon: pystray.Icon):
-    if vglobal.get_value("exit_lock")=="1":
+    if vglobal.get_value("exit_lock") == "1":
         print("正在同步文件,无法退出")
         icon.notify("正在同步文件,无法退出")
     else:
@@ -53,11 +58,12 @@ def on_exit(icon: pystray.Icon):
 
 
 def click_EjectDisk(icon: pystray.Icon):
-    if vglobal.get_value("exit_lock")=="1":
+    if vglobal.get_value("exit_lock") == "1":
         print("正在同步文件,无法弹出磁盘")
         icon.notify("正在同步文件,无法弹出磁盘")
     else:
-        vglobal.set_value("EjectDiskFlag","1")
+        vglobal.set_value("EjectDiskFlag", "1")
+
 
 def StartGUI():
     menu = (
