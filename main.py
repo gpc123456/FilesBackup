@@ -56,13 +56,13 @@ while True:
             des = src_and_des['des']
             if src == "" and des == "":
                 # print("未设置备份源目录和目标目录")
-                vglobal.set_value("status", "未设置备份源目录和目标目录")
+                vglobal.set_value("status", "未设置备份源目录和目标目录,同步服务未启动")
             elif src == "":
                 # print("未设置备份源目录")
-                vglobal.set_value("status", "未设置备份源目录")
+                vglobal.set_value("status", "未设置备份源目录,同步服务未启动")
             elif des == "":
                 # print("未设置备份目标目录")
-                vglobal.set_value("status", "未设置备份目标目录")
+                vglobal.set_value("status", "未设置备份目标目录,同步服务未启动")
             else:
                 break
     except FileNotFoundError:

@@ -19,7 +19,7 @@ def click_src(icon: pystray.Icon):
     Folderpath = filedialog.askdirectory()
     Folderpath = Folderpath.replace("/", "\\")
     print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
-    print("设置sec:"+Folderpath)
+    print("设置src:"+Folderpath)
     if Folderpath != "":
         with open("config", "r", encoding='utf-8') as f:
             json_data = f.read()
@@ -27,7 +27,7 @@ def click_src(icon: pystray.Icon):
             src_and_des['src'] = Folderpath
             with open("config", "w", encoding='utf-8') as f:
                 f.writelines(json.dumps(src_and_des, ensure_ascii=False))
-        icon.notify("备份源目录设置成功,如已开始同步,需要重新启动软件后生效")
+        icon.notify("备份源目录设置成功,如设置前已开始同步,需要重新启动软件后生效")
     else:
         icon.notify("未选择备份源目录,同步配置将不会被修改")
 
@@ -46,7 +46,7 @@ def click_des(icon, item):
             src_and_des['des'] = Folderpath
             with open("config", "w", encoding='utf-8') as f:
                 f.writelines(json.dumps(src_and_des, ensure_ascii=False))
-        icon.notify("备份目标目录设置成功,如已开始同步,需要重新启动软件后生效")
+        icon.notify("备份目标目录设置成功,如设置前已开始同步,需要重新启动软件后生效")
     else:
         icon.notify("未选择备份目标目录,同步配置将不会被修改")
 
@@ -69,10 +69,15 @@ def click_EjectDisk(icon: pystray.Icon):
     else:
         vglobal.set_value("EjectDiskFlag", "1")
 
+def reset_src_and_des(icon: pystray.Icon):
+    with open("config", "w", encoding='utf-8') as f:
+        f.writelines('{"src":"","des":""}')
+    icon.notify("重置备份源目录和目标目录成功,如重置前已开始同步,需要重新启动软件后生效")
 
 def StartGUI():
     menu = (
         MenuItem(text='状态信息', action=click_status, default=True, visible=True),
+        MenuItem(text='重置备份源目录和目标目录', action=reset_src_and_des),
         MenuItem(text='设置备份源目录', action=click_src),
         MenuItem(text='设置备份目标目录', action=click_des),
         MenuItem(text='停止同步,解除磁盘占用', action=click_EjectDisk),
