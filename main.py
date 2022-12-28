@@ -1,9 +1,9 @@
 import Core
+import GUI
 import time
 from watchdog.observers import Observer
 import json
 import sys
-import GUI
 import vglobal
 from plyer import notification
 
