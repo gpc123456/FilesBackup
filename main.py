@@ -75,9 +75,6 @@ while True:
     except FileNotFoundError:
         print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]", end="")
         print("没有找到配置文件,新建配置文件...")
-        while vglobal.get_value("file_lock") == "1":
-            pass
-        vglobal.set_value("file_lock", "1")
         with open("config", "w", encoding='utf-8') as f:
             f.writelines('{"src":"","des":""}')
         vglobal.set_value("file_lock", "0")
