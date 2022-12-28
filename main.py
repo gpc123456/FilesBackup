@@ -40,6 +40,7 @@ vglobal.set_value("EjectDiskFlag", "0")  # 0无拔出信号,1有拔出信号
 vglobal.set_value("exit", "0")  # 0无退出信号,1有退出信号
 vglobal.set_value("exit_lock", "0")  # 0:解锁允许退出,1:锁定不允许退出
 vglobal.set_value("status", "系统启动...")  # 状态信息
+vglobal.set_value("change_need_restart", "0")  # 修改同步目录后是否需要重新启动软件;0:不需要,1:需要
 
 src = ""
 des = ""
@@ -73,6 +74,8 @@ while True:
     if (vglobal.get_value("exit") == "1"):
         sys.exit(0)
     time.sleep(1)
+
+vglobal.set_value("change_need_restart", "1")
 
 while True:
     while True:

@@ -27,7 +27,10 @@ def click_src(icon: pystray.Icon):
             src_and_des['src'] = Folderpath
             with open("config", "w", encoding='utf-8') as f:
                 f.writelines(json.dumps(src_and_des, ensure_ascii=False))
-        icon.notify("备份源目录设置成功,如设置前已开始同步,需要重新启动软件后生效")
+        if vglobal.get_value("change_need_restart")=="0":
+            icon.notify("备份源目录设置成功")
+        else:
+           icon.notify("备份源目录设置成功,需要重启软件生效") 
     else:
         icon.notify("未选择备份源目录,同步配置将不会被修改")
 
@@ -46,7 +49,10 @@ def click_des(icon, item):
             src_and_des['des'] = Folderpath
             with open("config", "w", encoding='utf-8') as f:
                 f.writelines(json.dumps(src_and_des, ensure_ascii=False))
-        icon.notify("备份目标目录设置成功,如设置前已开始同步,需要重新启动软件后生效")
+        if vglobal.get_value("change_need_restart")=="0":
+            icon.notify("备份目标目录设置成功")
+        else:
+            icon.notify("备份目标目录设置成功,需要重启软件生效")
     else:
         icon.notify("未选择备份目标目录,同步配置将不会被修改")
 
@@ -72,7 +78,10 @@ def click_EjectDisk(icon: pystray.Icon):
 def reset_src_and_des(icon: pystray.Icon):
     with open("config", "w", encoding='utf-8') as f:
         f.writelines('{"src":"","des":""}')
-    icon.notify("重置备份源目录和目标目录成功,如重置前已开始同步,需要重新启动软件后生效")
+    if vglobal.get_value("change_need_restart")=="0":
+        icon.notify("重置备份源目录和目标目录成功")
+    else:
+        icon.notify("重置备份源目录和目标目录成功,需要重启软件生效")
 
 def StartGUI():
     menu = (
