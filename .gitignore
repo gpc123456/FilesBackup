@@ -7,3 +7,5 @@ pic_icon.ico
 stdout.log
 stderr.log
 build.txt
+.gitignore
+requirements.txt
