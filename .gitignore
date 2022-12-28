@@ -1,6 +1,7 @@
 __pycache__/
 build/
 ProjectVenv/
+ProjectVenv37/
 config
 img.png
 pic_icon.ico
