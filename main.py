@@ -66,7 +66,7 @@ while True:
             else:
                 break
     except FileNotFoundError:
-        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
+        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]", end="")
         print("没有找到配置文件,新建配置文件...")
         with open("config", "w", encoding='utf-8') as f:
             f.writelines('{"src":"","des":""}')
@@ -76,17 +76,23 @@ while True:
 
 while True:
     while True:
-        src_status = Core.SrcFileExists(src)
-        if src_status == 1:
-            des_status = Core.DesFileExists(des)
-            if des_status == 1:
-                notification.notify(title="自动备份小工具", message="发现备份源目录及目标目录", timeout=1)
+        if Core.SrcFileExists(src) == 1:
+            if Core.DesFileExists(des) == 1:
+                notification.notify(
+                    title="自动备份小工具", message="发现备份源目录及目标目录", timeout=1)
                 vglobal.set_value("status", "发现备份源目录及目标目录")
-                print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
+                print(
+                    "["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]", end="")
                 print("发现备份源目录及目标目录")
                 break
         if (vglobal.get_value("exit") == "1"):
             sys.exit(0)
+        if Core.SrcFileExists(src) != 1 and Core.DesFileExists(des) != 1:
+            vglobal.set_value("status", "未找到备份源目录和目标目录,同步服务未启动")
+        elif Core.SrcFileExists(src) != 1:
+            vglobal.set_value("status", "未找到备份源目录,同步服务未启动")
+        else:
+            vglobal.set_value("status", "未找到备份目标目录,同步服务未启动")
         time.sleep(1)
     observer = Observer()
     vglobal.set_value("exit_lock", "1")
@@ -98,27 +104,34 @@ while True:
     while True:
         if Core.SrcFileExists(src) == 0 or Core.DesFileExists(des) == 0:
             if Core.SrcFileExists(src) == 0 and Core.DesFileExists(des) == 0:
-                print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
+                print(
+                    "["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]", end="")
                 print("同步设备异常拔出,同步终止")
                 vglobal.set_value("status", "同步设备异常拔出,同步终止")
-                notification.notify(title="自动备份小工具", message="同步设备异常拔出,同步终止", timeout=5)
+                notification.notify(
+                    title="自动备份小工具", message="同步设备异常拔出,同步终止", timeout=5)
             elif Core.SrcFileExists(src) == 0:
-                print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
+                print(
+                    "["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]", end="")
                 print("同步源目录设备异常拔出,同步终止")
                 vglobal.set_value("status", "同步源目录设备异常拔出,同步终止")
-                notification.notify(title="自动备份小工具", message="同步源目录设备异常拔出,同步终止", timeout=5)
+                notification.notify(
+                    title="自动备份小工具", message="同步源目录设备异常拔出,同步终止", timeout=5)
             else:
-                print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
+                print(
+                    "["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]", end="")
                 print("同步目标目录设备异常拔出,同步终止")
                 vglobal.set_value("status", "同步目标目录设备异常拔出,同步终止")
-                notification.notify(title="自动备份小工具", message="同步目标目录设备异常拔出,同步终止", timeout=5)
+                notification.notify(
+                    title="自动备份小工具", message="同步目标目录设备异常拔出,同步终止", timeout=5)
             Core.EjectDisk(observer)
             exit_flag = "1"  # 设备被拔出,异常退出
             break
         Eject_flag = vglobal.get_value("EjectDiskFlag")
         if Eject_flag == "1":
             Core.EjectDisk(observer)
-            notification.notify(title="自动备份小工具", message="文件同步已停止,可以弹出磁盘", timeout=5)
+            notification.notify(
+                title="自动备份小工具", message="文件同步已停止,可以弹出磁盘", timeout=5)
             exit_flag = "0"  # 正常退出
             break
         if (vglobal.get_value("exit") == "1"):
