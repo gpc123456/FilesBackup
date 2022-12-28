@@ -35,11 +35,13 @@ sys.stderr = Logger("stderr.log")
 
 print("--------------------------------------------")
 print("ProcessStart["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]")
+
 vglobal._init()
 vglobal.set_value("EjectDiskFlag", "0")  # 0无拔出信号,1有拔出信号
 vglobal.set_value("exit", "0")  # 0无退出信号,1有退出信号
 vglobal.set_value("exit_lock", "0")  # 0:解锁允许退出,1:锁定不允许退出
 vglobal.set_value("status", "系统启动...")  # 状态信息
+vglobal.set_value("file_lock", "0")  # 配置文件锁,防止线程间文件读写冲突;0:不锁定文件,1:锁定文件
 vglobal.set_value("change_need_restart", "0")  # 修改同步目录后是否需要重新启动软件;0:不需要,1:需要
 
 src = ""
@@ -50,6 +52,9 @@ notification.notify(title="自动备份小工具", message="自动备份小工�
 
 while True:
     try:
+        while vglobal.get_value("file_lock") == "1":
+            pass
+        vglobal.set_value("file_lock", "1")
         with open("config", "r", encoding='utf-8') as f:
             json_data = f.read()
             src_and_des = json.loads(json_data)
@@ -66,16 +71,22 @@ while True:
                 vglobal.set_value("status", "未设置备份目标目录,同步服务未启动")
             else:
                 break
+        vglobal.set_value("file_lock", "0")
     except FileNotFoundError:
         print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]", end="")
         print("没有找到配置文件,新建配置文件...")
+        while vglobal.get_value("file_lock") == "1":
+            pass
+        vglobal.set_value("file_lock", "1")
         with open("config", "w", encoding='utf-8') as f:
             f.writelines('{"src":"","des":""}')
+        vglobal.set_value("file_lock", "0")
     if (vglobal.get_value("exit") == "1"):
         sys.exit(0)
     time.sleep(1)
 
 vglobal.set_value("change_need_restart", "1")
+vglobal.set_value("file_lock", "0")  # 配置文件完整,跳出循环后为文件解锁,防止是否需要重启软件的信息提示发生错误
 
 while True:
     while True:
