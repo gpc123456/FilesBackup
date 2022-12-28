@@ -30,8 +30,8 @@ class Logger(object):
         pass
 
 
-sys.stdout = Logger("stdout.log")
-sys.stderr = Logger("stderr.log")
+sys.stdout = Logger("stdout")
+sys.stderr = Logger("stderr")
 
 print("--------------------------------------------")
 print("ProcessStart["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]")
