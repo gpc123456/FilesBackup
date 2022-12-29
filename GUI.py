@@ -2,69 +2,20 @@ import threading
 import pystray
 from PIL import Image
 from pystray import MenuItem
-import tkinter as tk
-from tkinter import filedialog
-import json
 import time
 import vglobal
 
 
 def click_status(icon: pystray.Icon):
-    icon.notify("同步工具状态", vglobal.get_value("status"))
+    icon.notify("备份工具状态", vglobal.get_value("status"))
 
 
-def click_src(icon: pystray.Icon):
-    root = tk.Tk()
-    root.withdraw()
-    Folderpath = filedialog.askdirectory()
-    Folderpath = Folderpath.replace("/", "\\")
-    print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]", end="")
-    print("设置src:"+Folderpath)
-    if Folderpath != "":
-        while vglobal.get_value("file_lock") == "1":
-            pass
-        vglobal.set_value("file_lock", "1")
-        with open("config", "r", encoding='utf-8') as f:
-            json_data = f.read()
-            src_and_des = json.loads(json_data)
-            src_and_des['src'] = Folderpath
-            with open("config", "w", encoding='utf-8') as f:
-                f.writelines(json.dumps(src_and_des, ensure_ascii=False))
-        if vglobal.get_value("change_need_restart") == "0":
-            vglobal.set_value("file_lock", "0")
-            icon.notify("备份源目录设置成功")
-        else:
-            vglobal.set_value("file_lock", "0")
-            icon.notify("备份源目录设置成功,需要重启软件生效")
-    else:
-        icon.notify("未选择备份源目录,同步配置将不会被修改")
+def click_src():
+    vglobal.set_value("set_src", "1")
 
 
-def click_des(icon, item):
-    root = tk.Tk()
-    root.withdraw()
-    Folderpath = filedialog.askdirectory()
-    Folderpath = Folderpath.replace("/", "\\")
-    print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]", end="")
-    print("设置des:"+Folderpath)
-    if Folderpath != "":
-        while vglobal.get_value("file_lock") == "1":
-            pass
-        vglobal.set_value("file_lock", "1")
-        with open("config", "r", encoding='utf-8') as f:
-            json_data = f.read()
-            src_and_des = json.loads(json_data)
-            src_and_des['des'] = Folderpath
-            with open("config", "w", encoding='utf-8') as f:
-                f.writelines(json.dumps(src_and_des, ensure_ascii=False))
-        if vglobal.get_value("change_need_restart") == "0":
-            vglobal.set_value("file_lock", "0")
-            icon.notify("备份目标目录设置成功")
-        else:
-            vglobal.set_value("file_lock", "0")
-            icon.notify("备份目标目录设置成功,需要重启软件生效")
-    else:
-        icon.notify("未选择备份目标目录,同步配置将不会被修改")
+def click_des():
+    vglobal.set_value("set_des", "1")
 
 
 def on_exit(icon: pystray.Icon):
@@ -86,18 +37,8 @@ def click_EjectDisk(icon: pystray.Icon):
         vglobal.set_value("EjectDiskFlag", "1")
 
 
-def reset_src_and_des(icon: pystray.Icon):
-    while vglobal.get_value("file_lock") == "1":
-        pass
-    vglobal.set_value("file_lock", "1")
-    with open("config", "w", encoding='utf-8') as f:
-        f.writelines('{"src":"","des":""}')
-    if vglobal.get_value("change_need_restart") == "0":
-        vglobal.set_value("file_lock", "0")
-        icon.notify("重置备份源目录和目标目录成功")
-    else:
-        vglobal.set_value("file_lock", "0")
-        icon.notify("重置备份源目录和目标目录成功,需要重启软件生效")
+def reset_src_and_des():
+    vglobal.set_value("reset_src_des", "1")
 
 
 def StartGUI():
@@ -111,4 +52,5 @@ def StartGUI():
     )
     image = Image.open("img.png")
     icon = pystray.Icon("name", image, "自动备份小工具", menu)
+    vglobal.set_value("gui_icon",icon)
     threading.Thread(target=icon.run).start()

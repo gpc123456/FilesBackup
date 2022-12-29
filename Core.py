@@ -5,8 +5,10 @@ from datetime import date, timedelta
 from watchdog.events import FileSystemEventHandler
 import vglobal
 import subprocess
-from plyer import notification
 
+def GetGuiIcon(gui_icon):
+    global icon
+    icon = gui_icon
 
 def Sync(src, des):
     print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
@@ -16,8 +18,7 @@ def Sync(src, des):
         print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("初次使用同步功能,初始化同步文件夹")
         vglobal.set_value("status", "初次使用同步功能,初始化同步文件夹")
-        notification.notify(
-            title="自动备份小工具", message="初次使用同步功能,初始化同步文件夹", timeout=5)
+        icon.notify("初次使用同步功能,初始化同步文件夹")
         os.mkdir(des+"\\Backup")
         cmd = "xcopy /s /y /d /e "+src+" "+des+"\\Backup"
         p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
@@ -25,8 +26,7 @@ def Sync(src, des):
         # os.system(cmd)
         print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("同步文件夹初始化完成,开始监听文件修改")
-        notification.notify(
-            title="自动备份小工具", message="同步文件夹初始化完成,实时同步开启", timeout=5)
+        icon.notify("同步文件夹初始化完成,实时同步开启")
     else:
         # 检测每日快照备份文件夹,如今日未备份先进行备份
         # 每日备份文件夹格式:DayBackup_yyyy_mm_dd
@@ -35,8 +35,7 @@ def Sync(src, des):
             print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
             print("进行每日快照备份中...")
             vglobal.set_value("status", "进行每日快照备份中...")
-            notification.notify(
-                title="自动备份小工具", message="进行每日快照备份中...", timeout=5)
+            icon.notify("进行每日快照备份中...")
             os.mkdir(des+"\\DayBackup_"+yesterday)
             cmd = "xcopy /s /y /d /e "+des+"\\Backup "+des+"\\DayBackup_"+yesterday
             p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
@@ -44,8 +43,7 @@ def Sync(src, des):
             # os.system(cmd)
             print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
             print("每日快照备份完成")
-            notification.notify(
-                title="自动备份小工具", message="每日快照备份完成,更新备份文件夹", timeout=5)
+            icon.notify("每日快照备份完成,更新备份文件夹")
             print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
             print("更新备份文件夹")
             vglobal.set_value("status", "更新备份文件夹")
@@ -57,12 +55,11 @@ def Sync(src, des):
             # os.system(cmd)
             print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
             print("更新备份文件夹完成,实时同步开启")
-            notification.notify(
-                title="自动备份小工具", message="更新备份文件夹完成,实时同步开启", timeout=5)
+            icon.notify("更新备份文件夹完成,实时同步开启")
         else:
             print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
             print("今日已同步,本次同步将被跳过,开始监听文件修改")
-            notification.notify(title="自动备份小工具", message="实时同步开启", timeout=1)
+            icon.notify("实时同步开启")
 
 
 class MyHandler(FileSystemEventHandler):
