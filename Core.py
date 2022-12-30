@@ -72,7 +72,6 @@ class MyHandler(FileSystemEventHandler):
         self.des = des
 
     def on_created(self, event):
-        time.sleep(0.1)
         print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("发现文件更新")
         vglobal.set_value("status", "发现文件更新,正在同步")
@@ -89,7 +88,6 @@ class MyHandler(FileSystemEventHandler):
         vglobal.set_value("status", "同步完成")
 
     def on_moved(self, event):
-        time.sleep(0.1)
         print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("发现文件更新")
         vglobal.set_value("status", "发现文件更新,正在同步")
@@ -124,7 +122,6 @@ class MyHandler(FileSystemEventHandler):
         vglobal.set_value("status", "同步完成")
 
     def on_modified(self, event):
-        time.sleep(0.1)
         print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("发现文件更新")
         vglobal.set_value("status", "发现文件更新,正在同步")
