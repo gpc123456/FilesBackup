@@ -24,6 +24,7 @@ def on_exit(icon: pystray.Icon):
         print("正在同步文件,无法退出")
         icon.notify("正在同步文件,无法退出")
     else:
+        icon.notify("自动备份小工具已退出")
         icon.stop()
         vglobal.set_value("exit", "1")
 
