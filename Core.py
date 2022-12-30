@@ -11,13 +11,11 @@ def GetGuiIcon(gui_icon):
     icon = gui_icon
 
 def Sync(src, des):
-    print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
-    print("正在同步文件")
     # 检测备份文件夹
     if not os.path.exists(des+"\\Backup"):
         print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("初次使用同步功能,初始化同步文件夹")
-        vglobal.set_value("status", "初次使用同步功能,初始化同步文件夹")
+        vglobal.set_value("status", "初次使用同步功能,初始化同步文件夹中...")
         icon.notify("初次使用同步功能,初始化同步文件夹")
         os.mkdir(des+"\\Backup")
         yesterday = (date.today() + timedelta(days=-1)).strftime("%Y_%m_%d")
@@ -49,7 +47,7 @@ def Sync(src, des):
             icon.notify("每日快照备份完成,更新备份文件夹")
             print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
             print("更新备份文件夹")
-            vglobal.set_value("status", "更新备份文件夹")
+            vglobal.set_value("status", "更新备份文件夹中...")
             shutil.rmtree(des+"\\Backup")
             os.mkdir(des+"\\Backup")
             cmd = "xcopy /s /y /d /e /I "+src+" "+des+"\\Backup"
@@ -61,8 +59,15 @@ def Sync(src, des):
             icon.notify("更新备份文件夹完成,实时同步开启")
         else:
             print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
-            print("今日已同步,本次同步将被跳过,开始监听文件修改")
-            icon.notify("实时同步开启")
+            print("今日快照已创建,增量同步文件")
+            vglobal.set_value("status", "进行初始同步中...")
+            icon.notify("进行初始同步中...")
+            cmd = "xcopy /s /y /d /e /I "+src+" "+des+"\\Backup"
+            p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
+            p.wait()
+            print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
+            print("增量同步完成")
+            icon.notify("初始同步完成,实时同步开启")
 
 
 class MyHandler(FileSystemEventHandler):
