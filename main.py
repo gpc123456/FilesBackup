@@ -45,6 +45,7 @@ vglobal.set_value("status", "系统启动...")  # 状态信息
 vglobal.set_value("set_src", "0")  # 0:无src设置请求,1:有src设置请求
 vglobal.set_value("set_des", "0")  # 0:无des设置请求,1:有des设置请求
 vglobal.set_value("reset_src_des", "0")  # 0:无reset设置请求,1:有reset设置请求
+vglobal.set_value("occupy_disk","0") #0:磁盘未被占用,1:磁盘已被占用
 
 src = ""
 des = ""
@@ -158,6 +159,7 @@ while True:
             sys.exit(0)
         time.sleep(1)
     observer = Observer()
+    vglobal.set_value("occupy_disk","1")
     vglobal.set_value("exit_lock", "1")
     Core.Sync(src, des)
     vglobal.set_value("exit_lock", "0")
@@ -186,11 +188,13 @@ while True:
                 vglobal.set_value("status", "同步目标目录设备异常拔出,同步终止")
                 icon.notify("同步目标目录设备异常拔出,同步终止")
             Core.EjectDisk(observer)
+            vglobal.set_value("occupy_disk","0")
             exit_flag = "1"  # 设备被拔出,异常退出
             break
         Eject_flag = vglobal.get_value("EjectDiskFlag")
         if Eject_flag == "1":
             Core.EjectDisk(observer)
+            vglobal.set_value("occupy_disk","0")
             icon.notify("文件同步已停止,可以弹出磁盘")
             exit_flag = "0"  # 正常退出
             break

@@ -30,12 +30,15 @@ def on_exit(icon: pystray.Icon):
 
 
 def click_EjectDisk(icon: pystray.Icon):
-    if vglobal.get_value("exit_lock") == "1":
-        print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]", end="")
-        print("正在同步文件,无法弹出磁盘")
-        icon.notify("正在同步文件,无法弹出磁盘")
+    if vglobal.get_value("occupy_disk")=="0":
+        icon.notify("同步进程暂未占用磁盘,可以直接弹出磁盘")
     else:
-        vglobal.set_value("EjectDiskFlag", "1")
+        if vglobal.get_value("exit_lock") == "1":
+            print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]", end="")
+            print("正在同步文件,无法弹出磁盘")
+            icon.notify("正在同步文件,无法弹出磁盘")
+        else:
+            vglobal.set_value("EjectDiskFlag", "1")
 
 
 def reset_src_and_des():
