@@ -20,7 +20,7 @@ def Sync(src, des):
         vglobal.set_value("status", "初次使用同步功能,初始化同步文件夹")
         icon.notify("初次使用同步功能,初始化同步文件夹")
         os.mkdir(des+"\\Backup")
-        cmd = "xcopy /s /y /d /e "+src+" "+des+"\\Backup"
+        cmd = "xcopy /s /y /d /e /I "+src+" "+des+"\\Backup"
         p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
         p.wait()
         # os.system(cmd)
@@ -37,7 +37,7 @@ def Sync(src, des):
             vglobal.set_value("status", "进行每日快照备份中...")
             icon.notify("进行每日快照备份中...")
             os.mkdir(des+"\\DayBackup_"+yesterday)
-            cmd = "xcopy /s /y /d /e "+des+"\\Backup "+des+"\\DayBackup_"+yesterday
+            cmd = "xcopy /s /y /d /e /I "+des+"\\Backup "+des+"\\DayBackup_"+yesterday
             p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
             p.wait()
             # os.system(cmd)
@@ -49,7 +49,7 @@ def Sync(src, des):
             vglobal.set_value("status", "更新备份文件夹")
             shutil.rmtree(des+"\\Backup")
             os.mkdir(des+"\\Backup")
-            cmd = "xcopy /s /y /d /e "+src+" "+des+"\\Backup"
+            cmd = "xcopy /s /y /d /e /I "+src+" "+des+"\\Backup"
             p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
             p.wait()
             # os.system(cmd)
@@ -76,7 +76,7 @@ class MyHandler(FileSystemEventHandler):
         print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print(event.event_type, event.src_path)
         vglobal.set_value("exit_lock", "1")
-        cmd = "xcopy /s /y /d /e "+self.src+" "+self.des+"\\Backup"
+        cmd = "xcopy /s /y /d /e /I "+self.src+" "+self.des+"\\Backup"
         p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
         p.wait()
         # os.system(cmd)
@@ -111,7 +111,7 @@ class MyHandler(FileSystemEventHandler):
             print("要删除的文件不存在,无需进行删除操作")
         print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("移动操作前文件已删除,重新同步目标文件")
-        cmd = "xcopy /s /y /d /e "+self.src+" "+self.des+"\\Backup"
+        cmd = "xcopy /s /y /d /e /I "+self.src+" "+self.des+"\\Backup"
         p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
         p.wait()
         # os.system(cmd)
@@ -128,7 +128,7 @@ class MyHandler(FileSystemEventHandler):
         print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print(event.event_type, event.src_path)
         vglobal.set_value("exit_lock", "1")
-        cmd = "xcopy /s /y /d /e "+self.src+" "+self.des+"\\Backup"
+        cmd = "xcopy /s /y /d /e /I "+self.src+" "+self.des+"\\Backup"
         p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
         p.wait()
         # os.system(cmd)
