@@ -103,6 +103,8 @@ class MyHandler(FileSystemEventHandler):
         relative_path = event.src_path[replace_len+1:]
         delete_path = self.des+"\\Backup\\"+relative_path
         try:
+            if os.path.exists(delete_path)==False:
+                raise FileNotFoundError
             delete_is_dir = os.path.isdir(delete_path)
             if delete_is_dir == True:
                 print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
@@ -153,6 +155,8 @@ class MyHandler(FileSystemEventHandler):
         relative_path = event.src_path[replace_len+1:]
         delete_path = self.des+"\\Backup\\"+relative_path
         try:
+            if os.path.exists(delete_path)==False:
+                raise FileNotFoundError
             delete_is_dir = os.path.isdir(delete_path)
             if delete_is_dir == True:
                 print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
