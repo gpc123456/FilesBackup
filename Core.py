@@ -20,6 +20,8 @@ def Sync(src, des):
         vglobal.set_value("status", "初次使用同步功能,初始化同步文件夹")
         icon.notify("初次使用同步功能,初始化同步文件夹")
         os.mkdir(des+"\\Backup")
+        yesterday = (date.today() + timedelta(days=-1)).strftime("%Y_%m_%d")
+        os.mkdir(des+"\\DayBackup_"+yesterday)
         cmd = "xcopy /s /y /d /e /I "+src+" "+des+"\\Backup"
         p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
         p.wait()
