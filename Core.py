@@ -121,7 +121,7 @@ class MyHandler(FileSystemEventHandler):
         print(event.event_type, event.src_path)
         vglobal.set_value("exit_lock", "1")
         replace_len = len(self.src)
-        relative_path = event.src_path[replace_len+1:]
+        relative_path = event.src_path[replace_len:]
         delete_path = self.des+"\\Backup\\"+relative_path
         try:
             if os.path.exists(delete_path)==False:
@@ -179,7 +179,7 @@ class MyHandler(FileSystemEventHandler):
         print(event.event_type, event.src_path)
         vglobal.set_value("exit_lock", "1")
         replace_len = len(self.src)
-        relative_path = event.src_path[replace_len+1:]
+        relative_path = event.src_path[replace_len:]
         delete_path = self.des+"\\Backup\\"+relative_path
         try:
             if os.path.exists(delete_path)==False:
