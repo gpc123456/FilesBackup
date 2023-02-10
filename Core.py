@@ -24,6 +24,15 @@ def Sync(src, des):
         cmd = "xcopy /s /y /d /e /I "+src+" "+des+"\\Backup"
         p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
         p.wait()
+        cmd = "xcopy /s /y /d /e /I "+src+" "+des+"\\DayBackup_"+yesterday
+        p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
+        p.wait()
+        cmd = "ATTRIB -H -A -S "+des+"\\Backup"
+        p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
+        p.wait()
+        cmd = "ATTRIB -H -A -S "+des+"\\DayBackup_"+yesterday
+        p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
+        p.wait()
         # os.system(cmd)
         print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
         print("同步文件夹初始化完成,开始监听文件修改")
@@ -41,6 +50,9 @@ def Sync(src, des):
             cmd = "xcopy /s /y /d /e /I "+des+"\\Backup "+des+"\\DayBackup_"+yesterday
             p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
             p.wait()
+            cmd = "ATTRIB -H -A -S "+des+"\\DayBackup_"+yesterday
+            p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
+            p.wait()
             # os.system(cmd)
             print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
             print("每日快照备份完成")
@@ -53,6 +65,9 @@ def Sync(src, des):
             cmd = "xcopy /s /y /d /e /I "+src+" "+des+"\\Backup"
             p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
             p.wait()
+            cmd = "ATTRIB -H -A -S "+des+"\\Backup"
+            p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
+            p.wait()
             # os.system(cmd)
             print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
             print("更新备份文件夹完成,实时同步开启")
@@ -63,6 +78,9 @@ def Sync(src, des):
             vglobal.set_value("status", "进行初始同步中...")
             icon.notify("进行初始同步中...")
             cmd = "xcopy /s /y /d /e /I "+src+" "+des+"\\Backup"
+            p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
+            p.wait()
+            cmd = "ATTRIB -H -A -S "+des+"\\Backup"
             p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
             p.wait()
             print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
@@ -84,6 +102,9 @@ class MyHandler(FileSystemEventHandler):
         print(event.event_type, event.src_path)
         vglobal.set_value("exit_lock", "1")
         cmd = "xcopy /s /y /d /e /I "+self.src+" "+self.des+"\\Backup"
+        p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
+        p.wait()
+        cmd = "ATTRIB -H -A -S "+self.des+"\\Backup"
         p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
         p.wait()
         # os.system(cmd)
@@ -122,6 +143,9 @@ class MyHandler(FileSystemEventHandler):
         cmd = "xcopy /s /y /d /e /I "+self.src+" "+self.des+"\\Backup"
         p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
         p.wait()
+        cmd = "ATTRIB -H -A -S "+self.des+"\\Backup"
+        p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
+        p.wait()
         # os.system(cmd)
         vglobal.set_value("exit_lock", "0")
         print("["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]",end="")
@@ -136,6 +160,9 @@ class MyHandler(FileSystemEventHandler):
         print(event.event_type, event.src_path)
         vglobal.set_value("exit_lock", "1")
         cmd = "xcopy /s /y /d /e /I "+self.src+" "+self.des+"\\Backup"
+        p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
+        p.wait()
+        cmd = "ATTRIB -H -A -S "+self.des+"\\Backup"
         p = subprocess.Popen(cmd, shell=True, encoding='gb2312')
         p.wait()
         # os.system(cmd)
