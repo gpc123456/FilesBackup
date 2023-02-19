@@ -172,24 +172,24 @@ while True:
             if Core.SrcFileExists(src) == 0 and Core.DesFileExists(des) == 0:
                 print(
                     "["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]", end="")
-                print("同步设备异常拔出,同步终止")
-                vglobal.set_value("status", "同步设备异常拔出,同步终止")
-                icon.notify("同步设备异常拔出,同步终止")
+                print("无法找到备份源目录和目标目录,同步终止")
+                vglobal.set_value("status", "无法找到备份源目录和目标目录,同步终止")
+                icon.notify("无法找到备份源目录和目标目录,同步终止")
             elif Core.SrcFileExists(src) == 0:
                 print(
                     "["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]", end="")
-                print("同步源目录设备异常拔出,同步终止")
-                vglobal.set_value("status", "同步源目录设备异常拔出,同步终止")
-                icon.notify("同步源目录设备异常拔出,同步终止")
+                print("无法找到备份源目录,同步终止")
+                vglobal.set_value("status", "无法找到备份源目录,同步终止")
+                icon.notify("无法找到备份源目录,同步终止")
             else:
                 print(
                     "["+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+"]", end="")
-                print("同步目标目录设备异常拔出,同步终止")
-                vglobal.set_value("status", "同步目标目录设备异常拔出,同步终止")
-                icon.notify("同步目标目录设备异常拔出,同步终止")
+                print("无法找到备份目标目录,同步终止")
+                vglobal.set_value("status", "无法找到备份目标目录,同步终止")
+                icon.notify("无法找到备份目标目录,同步终止")
             Core.EjectDisk(observer)
             vglobal.set_value("occupy_disk","0")
-            exit_flag = "1"  # 设备被拔出,异常退出
+            exit_flag = "1"  # 备份源目录或目标目录失去跟踪,异常退出
             break
         Eject_flag = vglobal.get_value("EjectDiskFlag")
         if Eject_flag == "1":
