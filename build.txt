@@ -1,0 +1,6 @@
+pip install zstandard 安装zstandard以压缩onrfile文件大小
+pip install nuitka 安装nuitka
+需要配置C编译环境(GCC版本>=11.2)
+使用nuitka执行编译命令：
+nuitka --onefile --plugin-enable=tk-inter --windows-disable-console --standalone --output-dir=./build --windows-icon-from-ico=pic_icon.ico --output-filename=./build/自动备份小工具.exe main.py
+将img.png加入到发布目录中
